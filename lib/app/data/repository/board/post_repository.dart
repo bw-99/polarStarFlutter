@@ -19,11 +19,6 @@ class PostRepository {
     };
   }
 
-  // Future<int> deletePost(int COMMUNITY_ID, int BOARD_ID) async {
-  //   final status = await apiClient.deletePost(COMMUNITY_ID, BOARD_ID);
-  //   return status;
-  // }
-
   Future<int> deleteResource(
       int COMMUNITY_ID, int UNIQUE_ID, String tag) async {
     final status = await apiClient.deleteResource(COMMUNITY_ID, UNIQUE_ID, tag);
