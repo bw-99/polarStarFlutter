@@ -1,8 +1,6 @@
-import 'package:polarstar_flutter/app/data/provider/api.dart';
 import 'package:meta/meta.dart';
 import 'package:polarstar_flutter/app/data/provider/login_provider.dart';
 import 'package:polarstar_flutter/app/ui/android/functions/crypt.dart';
-import 'package:polarstar_flutter/session.dart';
 
 class LoginRepository {
   final LoginApiClient apiClient;

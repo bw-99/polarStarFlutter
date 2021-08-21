@@ -49,7 +49,7 @@ class LoginController extends GetxController {
           await box.remove('token');
           await box.remove('tokenFCM');
         }
-        // Get.offAndToNamed('/mainPage');
+        Get.offAndToNamed('/main');
         break;
       default:
         Get.snackbar("로그인 실패", "로그인 실패");
