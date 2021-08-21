@@ -38,6 +38,10 @@ class AppPages {
     GetPage(
         name: Routes.WRITE_POST,
         page: () => WritePost(),
+        binding: WritePostBinding()),
+    GetPage(
+        name: Routes.WRITE_PUT,
+        page: () => WritePost(),
         binding: WritePostBinding())
   ];
 }

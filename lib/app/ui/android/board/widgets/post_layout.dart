@@ -93,7 +93,9 @@ class PostLayout extends StatelessWidget {
                 child: InkWell(
                   onTap: () {
                     if (item.MYSELF) {
-                      Get.toNamed('/writePost', arguments: item);
+                      Get.toNamed(
+                          '/board/${item.COMMUNITY_ID}/bid/${item.BOARD_ID}',
+                          arguments: item);
                     } else {
                       c.totalSend(
                           '/scrap/${item.COMMUNITY_ID}/id/${item.BOARD_ID}',

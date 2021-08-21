@@ -7,72 +7,34 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:polarstar_flutter/app/controller/board/write_post_controller.dart';
+import 'package:polarstar_flutter/app/data/model/board/post_model.dart';
 import 'package:polarstar_flutter/app/data/model/board/write_post_model.dart';
 
 class WritePost extends StatelessWidget {
-  XFile _image;
-  TextEditingController title = TextEditingController();
-  TextEditingController content = TextEditingController();
   WritePostController c = Get.find();
 
-  Map arg = Get.arguments;
+  Post item = Get.arguments;
 
   final ImagePicker _picker = ImagePicker();
   TextEditingController photoName = TextEditingController();
 
-  // getGalleryImage(String titleStr, String contentStr) async {
-  //   var img = await _picker.pickImage(source: ImageSource.gallery);
-  //   // print(titleStr);
-  //   setState(() {
-  //     _image = img;
-  //     title.text = titleStr;
-  //     content.text = contentStr;
-  //   });
-  // }
+  getGalleryImage(String titleStr, String contentStr) async {
+    var img = await _picker.pickImage(source: ImageSource.gallery);
+    c.image.value = img;
+  }
 
-  // getCameraImage(String title, String content) async {
-  //   var img = await _picker.pickImage(source: ImageSource.camera);
-  //   setState(() {
-  //     _image = img;
-  //   });
-  // }
-
-  // Future upload(Map arg, XFile imageFile, Map data) async {
-  //   var request = arg['myself'] != null && arg['myself']
-  //       ? Session().multipartReq('PUT', '/board/bid/${arg['item']['bid']}')
-  //       : Session().multipartReq('POST', '/board/${arg['type']}');
-
-  //   var pic = await http.MultipartFile.fromPath("photo", imageFile.path);
-  //   //contentType: new MediaType('image', 'png'));
-
-  //   request.files.add(pic);
-  //   request.fields['title'] = data['title'];
-  //   request.fields['description'] = data['description'];
-  //   request.fields['unnamed'] = data['unnamed'];
-  //   // print(request.files[0].filename);
-  //   var response = await request.send();
-  //   print(response.statusCode);
-  //   return response;
-  // }
-
-  // @override
-  // void initState() {
-  //   if (arg['item'] != null) {
-  //     setState(() {
-  //       title.text = arg['item']['title'].toString();
-  //       content.text = arg['item']['content'].toString();
-  //       if (arg['item']['photo'] != '' || arg['item']['photo'] == null) {
-  //         _image = XFile(
-  //             'http://ec2-3-37-156-121.ap-northeast-2.compute.amazonaws.com:3000${arg['item']['photo']}');
-  //       }
-  //     });
-  //   }
-
-  //   super.initState();
-  // }
+  getCameraImage(String title, String content) async {
+    var img = await _picker.pickImage(source: ImageSource.camera);
+    c.image.value = img;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController title =
+        TextEditingController(text: item == null ? "" : item.TITLE);
+    final TextEditingController content =
+        TextEditingController(text: item == null ? "" : item.CONTENT);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('polarStar'),
@@ -82,16 +44,32 @@ class WritePost extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
                 onTap: () async {
-                  Map data = WritePostModel(
+                  Map<String, dynamic> data = WritePostModel(
                           title: title.text,
                           description: content.text,
                           unnamed: (c.anonymousCheck.value) ? '1' : '0')
                       .toJson();
 
-                  print(c.anonymousCheck.value);
                   print(data);
 
-                  await c.postPost(data);
+                  //수정
+                  if (c.putOrPost == "put") {
+                    if (c.image.value != null) {
+                      await c.putPostImage(data);
+                    } else {
+                      await c.putPostNoImage(data);
+                    }
+                  }
+                  //작성
+                  else {
+                    if (c.image.value != null) {
+                      await c.postPostImage(data);
+                    } else {
+                      await c.postPostNoImage(data);
+                    }
+                  }
+
+                  // Get.offAndToNamed("/board/${c.COMMUNITY_ID}/page/1");
 
                   // if (_image != null) {
                   //   upload(arg, _image, data).then((value) {
@@ -185,7 +163,7 @@ class WritePost extends StatelessWidget {
                   padding: const EdgeInsets.all(4.0),
                   child: InkWell(
                     onTap: () {
-                      // getGalleryImage(title.text, content.text);
+                      getGalleryImage(title.text, content.text);
                     },
                     child: Icon(Icons.photo),
                   ),
@@ -194,7 +172,7 @@ class WritePost extends StatelessWidget {
                   padding: const EdgeInsets.all(4.0),
                   child: InkWell(
                     onTap: () {
-                      // getCameraImage(title.text, content.text);
+                      getCameraImage(title.text, content.text);
                     },
                     child: Icon(Icons.photo_camera),
                   ),
@@ -223,7 +201,8 @@ class WritePost extends StatelessWidget {
                         child: Checkbox(
                           value: c.anonymousCheck.value,
                           onChanged: (value) {
-                            // c.changeAnonymous(value);
+                            c.anonymousCheck.value = !c.anonymousCheck.value;
+                            print(c.anonymousCheck.value);
                           },
                         ),
                       ),
