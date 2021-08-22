@@ -9,7 +9,6 @@ import 'package:polarstar_flutter/app/controller/login/login_controller.dart';
 import 'package:polarstar_flutter/app/ui/android/board/board.dart';
 import 'package:polarstar_flutter/app/ui/android/board/post.dart';
 import 'package:polarstar_flutter/app/ui/android/board/write_post.dart';
-import 'package:polarstar_flutter/app/ui/android/home/home_page.dart';
 import 'package:polarstar_flutter/app/ui/android/main/main_page.dart';
 import 'package:polarstar_flutter/app/ui/android/login/login_page.dart';
 import 'package:polarstar_flutter/app/ui/android/profile/mypage.dart';
@@ -20,7 +19,8 @@ class AppPages {
   static final pages = [
     GetPage(
       name: Routes.INITIAL,
-      page: () => HomePage(),
+      page: () => MainPage(),
+      binding: MainBinding(),
     ),
     GetPage(
       name: Routes.LOGIN,

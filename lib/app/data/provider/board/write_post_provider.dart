@@ -1,12 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:polarstar_flutter/app/data/model/board/post_model.dart';
-import 'package:polarstar_flutter/app/data/model/main_model.dart';
-import 'package:polarstar_flutter/app/data/model/model.dart';
-import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 import 'package:polarstar_flutter/session.dart';
 
 class WritePostApiClient {
