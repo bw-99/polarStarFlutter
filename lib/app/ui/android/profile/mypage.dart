@@ -117,73 +117,73 @@ class MyPageProfilePostIndex extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Spacer(
-          flex: 27,
-        ),
-        Expanded(
-          flex: 61,
-          child: InkWell(
-            child: Text(
-              "내가 쓴 글",
-              textScaleFactor: 0.8,
-              style: TextStyle(
-                  color: myPageController.profilePostIndex.value == 0
-                      ? Colors.red[700]
-                      : Colors.black),
+    return Obx(() {
+      return Row(
+        children: [
+          Spacer(
+            flex: 27,
+          ),
+          Expanded(
+            flex: 61,
+            child: InkWell(
+              child: Text(
+                "내가 쓴 글",
+                textScaleFactor: 0.8,
+                style: TextStyle(
+                    color: myPageController.profilePostIndex.value == 0
+                        ? Colors.red[700]
+                        : Colors.black),
+              ),
+              onTap: () {
+                myPageController.profilePostIndex.value = 0;
+              },
             ),
-            onTap: () {
-              myPageController.profilePostIndex.value = 0;
-            },
           ),
-        ),
-        Spacer(
-          flex: 63,
-        ),
-        Expanded(
-          flex: 70,
-          child: InkWell(
-            child: Text("좋아요 누른 글",
-                textScaleFactor: 0.8,
-                style: TextStyle(
-                    color: myPageController.profilePostIndex.value == 1
-                        ? Colors.red[700]
-                        : Colors.black)),
-            onTap: () {
-              myPageController.profilePostIndex.value = 1;
-            },
+          Spacer(
+            flex: 63,
           ),
-        ),
-        Spacer(
-          flex: 45,
-        ),
-        Expanded(
-          flex: 54,
-          child: InkWell(
-            child: Text("저장한 글",
-                textScaleFactor: 0.8,
-                style: TextStyle(
-                    color: myPageController.profilePostIndex.value == 2
-                        ? Colors.red[700]
-                        : Colors.black)),
-            onTap: () {
-              myPageController.profilePostIndex.value = 2;
-            },
+          Expanded(
+            flex: 70,
+            child: InkWell(
+              child: Text("좋아요 누른 글",
+                  textScaleFactor: 0.8,
+                  style: TextStyle(
+                      color: myPageController.profilePostIndex.value == 1
+                          ? Colors.red[700]
+                          : Colors.black)),
+              onTap: () {
+                myPageController.profilePostIndex.value = 1;
+              },
+            ),
           ),
-        ),
-        Spacer(
-          flex: 40,
-        )
-      ],
-    );
+          Spacer(
+            flex: 45,
+          ),
+          Expanded(
+            flex: 54,
+            child: InkWell(
+              child: Text("저장한 글",
+                  textScaleFactor: 0.8,
+                  style: TextStyle(
+                      color: myPageController.profilePostIndex.value == 2
+                          ? Colors.red[700]
+                          : Colors.black)),
+              onTap: () {
+                myPageController.profilePostIndex.value = 2;
+              },
+            ),
+          ),
+          Spacer(
+            flex: 40,
+          )
+        ],
+      );
+    });
   }
 }
 
 class ProfileIndex extends StatelessWidget {
-  const ProfileIndex({
-    Key key,
-  }) : super(key: key);
+  const ProfileIndex({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -205,8 +205,8 @@ class ProfileIndex extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              onTap: () {
-                Get.toNamed('/myPage/profile');
+              onTap: () async {
+                await Get.toNamed('/myPage/profile');
               },
             )),
         Spacer(
@@ -267,71 +267,73 @@ class MyPageProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Spacer(
-          flex: 10,
-        ),
-        Expanded(
-          flex: 80,
-          child: InkWell(
-              onTap: () {
-                Get.toNamed('/myPage/profile');
-              },
-              child: CircleAvatar(
-                  radius: 100,
-                  backgroundColor: Colors.white,
-                  child: CachedNetworkImage(
-                      imageUrl:
-                          'http://ec2-3-37-156-121.ap-northeast-2.compute.amazonaws.com:3000/uploads/${myPageController.myProfile.value.PROFILE_PHOTO}',
-                      fadeInDuration: Duration(milliseconds: 0),
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) =>
-                              Image(image: AssetImage('image/spinner.gif')),
-                      errorWidget: (context, url, error) {
-                        print(error);
-                        return Icon(Icons.error);
-                      }))),
-        ),
-        Spacer(
-          flex: 20,
-        ),
-        Expanded(
-          flex: 250,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Spacer(flex: 12),
-            Expanded(
-                flex: 20,
-                child: Text(
-                  '닉네임 : ${myPageController.myProfile.value.PROFILE_NICKNAME}',
-                  textScaleFactor: 0.7,
-                )),
-            Spacer(
-              flex: 2,
-            ),
-            Expanded(
-                flex: 12,
-                child: Text(
-                  '프로필 메시지 : ${myPageController.myProfile.value.PROFILE_MESSAGE}',
-                  textScaleFactor: 0.7,
-                )),
-            Spacer(
-              flex: 2,
-            ),
-            Expanded(
-                flex: 12,
-                child: Text(
-                  '학교 : ${myPageController.myProfile.value.PROFILE_SCHOOL}',
-                  textScaleFactor: 0.8,
-                )),
-            Spacer(
-              flex: 8,
-            )
-          ]),
-        )
-      ],
-    );
+    return Obx(() {
+      return Row(
+        children: [
+          Spacer(
+            flex: 10,
+          ),
+          Expanded(
+            flex: 80,
+            child: InkWell(
+                onTap: () {
+                  Get.toNamed('/myPage/profile');
+                },
+                child: CircleAvatar(
+                    radius: 100,
+                    backgroundColor: Colors.white,
+                    child: CachedNetworkImage(
+                        imageUrl:
+                            'http://ec2-3-37-156-121.ap-northeast-2.compute.amazonaws.com:3000/uploads/${myPageController.myProfile.value.PROFILE_PHOTO}',
+                        fadeInDuration: Duration(milliseconds: 0),
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                                Image(image: AssetImage('image/spinner.gif')),
+                        errorWidget: (context, url, error) {
+                          print(error);
+                          return Icon(Icons.error);
+                        }))),
+          ),
+          Spacer(
+            flex: 20,
+          ),
+          Expanded(
+            flex: 250,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Spacer(flex: 12),
+              Expanded(
+                  flex: 20,
+                  child: Text(
+                    '닉네임 : ${myPageController.myProfile.value.PROFILE_NICKNAME}',
+                    textScaleFactor: 0.7,
+                  )),
+              Spacer(
+                flex: 2,
+              ),
+              Expanded(
+                  flex: 12,
+                  child: Text(
+                    '프로필 메시지 : ${myPageController.myProfile.value.PROFILE_MESSAGE}',
+                    textScaleFactor: 0.7,
+                  )),
+              Spacer(
+                flex: 2,
+              ),
+              Expanded(
+                  flex: 12,
+                  child: Text(
+                    '학교 : ${myPageController.myProfile.value.PROFILE_SCHOOL}',
+                    textScaleFactor: 0.8,
+                  )),
+              Spacer(
+                flex: 8,
+              )
+            ]),
+          )
+        ],
+      );
+    });
   }
 }
 

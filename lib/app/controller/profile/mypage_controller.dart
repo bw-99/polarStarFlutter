@@ -155,6 +155,10 @@ class MyPageController extends GetxController {
     });
   }
 
+  void setDataAvailableMypageFalse() {
+    _dataAvailableMypage.value = false;
+  }
+
   bool get dataAvailableMypage => _dataAvailableMypage.value;
   bool get dataAvailableMypageWrite => _dataAvailableMypageWrite.value;
   bool get dataAvailableMypageLike => _dataAvailableMypageLike.value;
