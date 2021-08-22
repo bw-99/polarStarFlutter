@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:polarstar_flutter/app/data/model/profile/mypage_model.dart';
 import 'package:polarstar_flutter/session.dart';
+import 'package:http/http.dart' as http;
 
 class MyPageApiClient {
   Future<Map<String, dynamic>> getMineWrite() async {
@@ -43,5 +44,20 @@ class MyPageApiClient {
         .map((model) => MyPageBoardModel.fromJson(model))
         .toList();
     return {"status": response.statusCode, "myPageBoard": listMyPageBoardVal};
+  }
+
+  Future<Map<String, dynamic>> uploadProfileImage(String imagePath) async {
+    var request = Session().multipartReq('PATCH', '/info/modify/photo');
+
+    var pic = await http.MultipartFile.fromPath("photo", imagePath);
+    request.files.add(pic);
+
+    var streamedResponse = await request.send();
+    var response = await http.Response.fromStream(streamedResponse);
+
+    return {
+      "status": response.statusCode,
+      "src": jsonDecode(response.body)["src"]
+    };
   }
 }

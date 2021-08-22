@@ -172,7 +172,7 @@ class PostLayout extends StatelessWidget {
         child: item.PHOTO != '' && item.PHOTO != null
             ? CachedNetworkImage(
                 imageUrl:
-                    'http://ec2-3-37-156-121.ap-northeast-2.compute.amazonaws.com:3000/${item.PHOTO}')
+                    'http://ec2-3-37-156-121.ap-northeast-2.compute.amazonaws.com:3000/uploads/board/${item.PHOTO}')
             : null,
       ),
       // 좋아요, 댓글, 스크랩 수

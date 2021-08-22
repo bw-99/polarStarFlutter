@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -18,6 +16,7 @@ class WritePostController extends GetxController {
   Rx<bool> _dataAvailable = false.obs;
   Rx<XFile> image = null.obs;
   RxBool anonymousCheck = true.obs;
+  Rx<String> imagePath = "".obs;
 
   WritePostController(
       {@required this.repository,
@@ -57,8 +56,7 @@ class WritePostController extends GetxController {
 
   //게시글 작성 (사진 O)
   Future<void> postPostImage(Map<String, dynamic> data) async {
-    XFile imageFile = image.value;
-    var pic = await http.MultipartFile.fromPath("photo", imageFile.path);
+    var pic = await http.MultipartFile.fromPath("photo", imagePath.value);
 
     int status = await repository.postPostImage(data, pic, COMMUNITY_ID);
     Get.back();
@@ -68,8 +66,7 @@ class WritePostController extends GetxController {
 
   //게시글 수정 (사진 O)
   Future<void> putPostImage(Map<String, dynamic> data) async {
-    XFile imageFile = image.value;
-    var pic = await http.MultipartFile.fromPath("photo", imageFile.path);
+    var pic = await http.MultipartFile.fromPath("photo", imagePath.value);
 
     int status =
         await repository.putPostImage(data, pic, COMMUNITY_ID, BOARD_ID);

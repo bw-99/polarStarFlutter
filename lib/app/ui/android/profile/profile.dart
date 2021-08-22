@@ -16,54 +16,12 @@ class Profile extends StatelessWidget {
 
   final box = GetStorage();
 
+  getGalleryImage() async {
+    var img = await _picker.pickImage(source: ImageSource.gallery);
+    myPageController.imagePath.value = img.path;
+  }
+
   bool showProgress = false;
-
-  // getGalleryImage(myPageController myPageController) async {
-  //   var pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-  //   var img = File(pickedFile.path);
-  //   myPageController.setProfileImage(pickedFile);
-  //   final Directory extDir = await getApplicationDocumentsDirectory();
-  //   String dirPath = extDir.path;
-  //   final String filePath = '${dirPath}/profile.png';
-
-  //   final File profileImage = await img.copy(filePath);
-
-  //   box.write("profileImage", profileImage.path);
-  // }
-
-  // Future upload(XFile imageFile, myPageController myPageController) async {
-  //   var request = Session().multipartReq('PATCH', '/info/modify/photo');
-
-  //   var pic = await http.MultipartFile.fromPath("photo", imageFile.path);
-  //   print(imageFile.path);
-  //   request.files.add(pic);
-
-  //   var streamedResponse = await request.send();
-  //   var response = await http.Response.fromStream(streamedResponse);
-  //   print(response.statusCode);
-  //   switch (response.statusCode) {
-  //     case 200:
-  //       Get.snackbar("사진 변경 성공", "사진 변경 성공",
-  //           snackPosition: SnackPosition.BOTTOM);
-  //       break;
-  //     case 500:
-  //       Get.snackbar("사진 변경 실패", "사진 변경 실패",
-  //           snackPosition: SnackPosition.BOTTOM);
-  //       break;
-  //     default:
-  //   }
-  //   print(response.body);
-  //   myPageController.profileImagePath.value =
-  //       "uploads/" + jsonDecode(response.body)["src"];
-  //   // myPageController
-  //   //     .setProfileImagePath("uploads/" + jsonDecode(response.body)["src"]);
-  //   print(jsonDecode(response.body)["src"]);
-  //   print(myPageController.profileImagePath.value);
-  //   /*setState(() {
-  //     showProgress=true;
-  //   });*/
-  //   return response;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -104,21 +62,15 @@ class Profile extends StatelessWidget {
                                               textCancel: "아니오",
                                               confirm: ElevatedButton(
                                                   onPressed: () async {
-                                                    print("confirm!");
                                                     Get.back();
 
-                                                    // await getGalleryImage(
-                                                    //     myPageController);
-
-                                                    // upload(
-                                                    //     myPageController
-                                                    //         .image.value,
-                                                    //     myPageController);
+                                                    await getGalleryImage();
+                                                    await myPageController
+                                                        .upload();
                                                   },
                                                   child: Text("네")),
                                               cancel: ElevatedButton(
                                                   onPressed: () {
-                                                    print("cancle!");
                                                     Get.back();
                                                   },
                                                   child: Text("아니오")));

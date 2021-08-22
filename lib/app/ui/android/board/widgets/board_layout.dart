@@ -108,7 +108,7 @@ class PostPreview extends StatelessWidget {
                           ? Container()
                           : CachedNetworkImage(
                               imageUrl:
-                                  'http://ec2-3-37-156-121.ap-northeast-2.compute.amazonaws.com:3000/uploads/board${item.PHOTO}',
+                                  'http://ec2-3-37-156-121.ap-northeast-2.compute.amazonaws.com:3000/uploads/board/${item.PHOTO}',
                               fit: BoxFit.fill,
                               fadeInDuration: Duration(milliseconds: 0),
                               progressIndicatorBuilder: (context, url,

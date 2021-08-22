@@ -19,4 +19,9 @@ class MyPageRepository {
   Future<Map<String, dynamic>> getMineScrap() async {
     return await apiClient.getMineScrap();
   }
+
+  Future<Map<String, dynamic>> uploadProfileImage(String imagePath) async {
+    var map = await apiClient.uploadProfileImage(imagePath);
+    return map;
+  }
 }

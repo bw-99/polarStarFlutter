@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,13 +18,12 @@ class MyPageController extends GetxController {
   RxList<MyPageBoardModel> myBoardLike = <MyPageBoardModel>[].obs;
   RxList<MyPageBoardModel> myBoardScrap = <MyPageBoardModel>[].obs;
   Rx<int> profilePostIndex = 0.obs;
+  Rx<String> imagePath = ''.obs;
 
   var _dataAvailableMypage = false.obs;
   var _dataAvailableMypageWrite = false.obs;
   var _dataAvailableMypageLike = false.obs;
   var _dataAvailableMypageScrap = false.obs;
-
-  var image = Rx<XFile>(null); //프사 바꿀때 쓰는 Obs
 
   //내가 쓴 글 목록 불러옴
   Future<void> getMineWrite() async {
@@ -84,10 +85,6 @@ class MyPageController extends GetxController {
     _dataAvailableMypageScrap.value = true;
   }
 
-  void setProfileImage(img) {
-    image.value = img;
-  }
-
   @override
   void onInit() async {
     super.onInit();
@@ -128,6 +125,7 @@ class MyPageController extends GetxController {
     _dataAvailableMypageWrite.value = false;
     _dataAvailableMypageLike.value = false;
     _dataAvailableMypageScrap.value = false;
+    profilePostIndex.value = 0;
     await getMineWrite();
   }
 
@@ -153,6 +151,26 @@ class MyPageController extends GetxController {
           Get.snackbar("변경 실패", "변경 실패");
       }
     });
+  }
+
+  Future<void> upload() async {
+    Map<String, dynamic> value =
+        await repository.uploadProfileImage(imagePath.value);
+
+    switch (value["status"]) {
+      case 200:
+        Get.snackbar("사진 변경 성공", "사진 변경 성공",
+            snackPosition: SnackPosition.BOTTOM);
+        myProfile.update((val) {
+          val.PROFILE_PHOTO = value["src"];
+        });
+        break;
+      case 500:
+        Get.snackbar("사진 변경 실패", "사진 변경 실패",
+            snackPosition: SnackPosition.BOTTOM);
+        break;
+      default:
+    }
   }
 
   void setDataAvailableMypageFalse() {
