@@ -12,7 +12,8 @@ class Board {
 
   String PROFILE_NICKNAME, PROFILE_PHOTO;
 
-  Board({
+  Board(
+    Set set, {
     BOARD_ID,
     COMMUNITY_ID,
     TITLE,

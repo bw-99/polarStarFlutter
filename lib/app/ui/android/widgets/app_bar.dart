@@ -26,7 +26,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             icon: Text('LOGOUT')),
         IconButton(
             onPressed: () {
-              // Get.toNamed('/myPage');
+              Get.toNamed('/myPage');
             },
             icon: Icon(Icons.person)),
       ],
