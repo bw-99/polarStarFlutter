@@ -17,6 +17,7 @@ class MainController extends GetxController {
   RxList<BoardInfo> boardInfo = <BoardInfo>[].obs;
   RxList<HotBoard> hotBoard = <HotBoard>[].obs;
   RxBool _dataAvailable = false.obs;
+  RxInt mainPageIndex = 0.obs;
 
   Future<void> getBoardInfo() async {
     final value = await repository.getBoardInfo();

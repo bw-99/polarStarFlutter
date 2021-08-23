@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 import 'package:polarstar_flutter/app/bindings/board/board_binding.dart';
+import 'package:polarstar_flutter/app/bindings/board/hot_board_binding.dart';
 import 'package:polarstar_flutter/app/bindings/board/post_binding.dart';
+import 'package:polarstar_flutter/app/bindings/board/search_binding.dart';
 import 'package:polarstar_flutter/app/bindings/board/write_post_binding.dart';
 import 'package:polarstar_flutter/app/bindings/login_binding.dart';
 import 'package:polarstar_flutter/app/bindings/main_binding.dart';
 import 'package:polarstar_flutter/app/bindings/profile/mypage_binding.dart';
-import 'package:polarstar_flutter/app/controller/login/login_controller.dart';
 import 'package:polarstar_flutter/app/ui/android/board/board.dart';
 import 'package:polarstar_flutter/app/ui/android/board/post.dart';
 import 'package:polarstar_flutter/app/ui/android/board/write_post.dart';
@@ -37,21 +38,35 @@ class AppPages {
       page: () => Post(),
       binding: PostBinding(),
     ),
-    GetPage(name: Routes.BOARD, page: () => Board(), binding: BoardBinding()),
     GetPage(
-        name: Routes.WRITE_POST,
-        page: () => WritePost(),
-        binding: WritePostBinding()),
+      name: Routes.SEARCH_ALL,
+      page: () => Board(),
+      binding: BoardSearchBinding(),
+    ),
     GetPage(
-        name: Routes.WRITE_PUT,
-        page: () => WritePost(),
-        binding: WritePostBinding()),
+      name: Routes.HOTBOARD,
+      page: () => Board(),
+      binding: HotBoardBinding(),
+    ),
     GetPage(
-        name: Routes.MYPROFILE,
-        page: () => Profile(),
-        binding: BindingsBuilder(() {
-          print("asfadsf");
-        })),
+      name: Routes.BOARD,
+      page: () => Board(),
+      binding: BoardBinding(),
+    ),
+    GetPage(
+      name: Routes.WRITE_POST,
+      page: () => WritePost(),
+      binding: WritePostBinding(),
+    ),
+    GetPage(
+      name: Routes.WRITE_PUT,
+      page: () => WritePost(),
+      binding: WritePostBinding(),
+    ),
+    GetPage(
+      name: Routes.MYPROFILE,
+      page: () => Profile(),
+    ),
     GetPage(
       name: Routes.MYPAGE,
       page: () => Mypage(),

@@ -3,16 +3,24 @@ import 'package:get/get.dart';
 import 'package:polarstar_flutter/app/data/provider/board/board_provider.dart';
 import 'package:polarstar_flutter/app/data/repository/board/board_repository.dart';
 
-class BoardBinding implements Bindings {
+class HotBoardBinding implements Bindings {
   @override
   void dependencies() async {
     Get.put(BoardController(
         repository: BoardRepository(apiClient: BoardApiClient()),
-        initCommunityId: int.parse(Get.parameters["COMMUNITY_ID"]),
+        initCommunityId: -1,
         initPage: int.parse(Get.parameters["page"])));
-
+    print("put@@@");
+    print("put!!!");
+    print("put@@@");
+    print("put!!!");
+    print("put@@@");
+    print("put!!!");
+    print("put@@@");
+    print("put!!!");
+    print("put@@@");
+    print("put@@@");
     final BoardController boardController = Get.find();
-
-    await boardController.getBoard();
+    await boardController.getHotBoard();
   }
 }

@@ -20,6 +20,7 @@ class BoardController extends GetxController {
 
   RxInt COMMUNITY_ID = 4.obs;
   RxInt page = 1.obs;
+  RxInt httpStatus = 200.obs;
 
   // RxBool canBuildRecruitBoard = false.obs;
 
@@ -36,7 +37,13 @@ class BoardController extends GetxController {
   Future<void> refreshPage() async {
     postBody.clear();
     dataAvailablePostPreview.value = false;
-    getBoard().then((value) => postBody.refresh());
+    await getBoard().then((value) => postBody.refresh());
+  }
+
+  Future<void> refreshHotPage() async {
+    postBody.clear();
+    dataAvailablePostPreview.value = false;
+    await getHotBoard().then((value) => postBody.refresh());
   }
 
   Future<void> getBoard() async {
@@ -46,9 +53,80 @@ class BoardController extends GetxController {
     final int status = response["status"];
     final List<Board> listBoard = response["listBoard"];
 
+    httpStatus.value = status;
+
+    switch (status) {
+      case 200:
+        postBody.clear();
+
+        for (int i = 0; i < listBoard.length; i++) {
+          postBody.add(listBoard[i]);
+        }
+        dataAvailablePostPreview.value = true;
+        break;
+
+      default:
+        dataAvailablePostPreview.value = false;
+        break;
+    }
+  }
+
+  Future<void> getHotBoard() async {
+    dataAvailablePostPreview.value = false;
+    Map<String, dynamic> response = await repository.getHotBoard(page.value);
+    final int status = response["status"];
+    final List<Board> listBoard = response["listBoard"];
+    httpStatus.value = status;
     switch (status) {
       case 200:
         // canBuildRecruitBoard(true);
+        postBody.clear();
+
+        for (int i = 0; i < listBoard.length; i++) {
+          postBody.add(listBoard[i]);
+        }
+        dataAvailablePostPreview.value = true;
+        break;
+
+      default:
+        dataAvailablePostPreview.value = false;
+        break;
+    }
+  }
+
+  Future<void> getSearchBoard(String searchText) async {
+    dataAvailablePostPreview.value = false;
+    Map<String, dynamic> response =
+        await repository.getSearchBoard(searchText, COMMUNITY_ID.value);
+    final int status = response["status"];
+    final List<Board> listBoard = response["listBoard"];
+
+    httpStatus.value = status;
+    switch (status) {
+      case 200:
+        postBody.clear();
+
+        for (int i = 0; i < listBoard.length; i++) {
+          postBody.add(listBoard[i]);
+        }
+        dataAvailablePostPreview.value = true;
+        break;
+
+      default:
+        dataAvailablePostPreview.value = false;
+        break;
+    }
+  }
+
+  Future<void> getSearchAll(String searchText) async {
+    dataAvailablePostPreview.value = false;
+    Map<String, dynamic> response = await repository.getSearchAll(searchText);
+    final int status = response["status"];
+    final List<Board> listBoard = response["listBoard"];
+
+    httpStatus.value = status;
+    switch (status) {
+      case 200:
         postBody.clear();
 
         for (int i = 0; i < listBoard.length; i++) {
@@ -70,7 +148,7 @@ class BoardController extends GetxController {
     COMMUNITY_ID.value = initCommunityId;
     page.value = initPage;
 
-    await getBoard();
+    // await getBoard();
 
     scrollController.value.addListener(() {
       if (scrollController.value.position.pixels ==

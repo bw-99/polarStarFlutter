@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:polarstar_flutter/app/controller/board/board_controller.dart';
 import 'package:polarstar_flutter/app/data/model/board/board_model.dart';
 
 // 게시글 프리뷰 위젯
@@ -183,7 +184,7 @@ class PostPreview extends StatelessWidget {
 // 검색창
 class SearchBar extends StatelessWidget {
   const SearchBar({Key key, @required this.controller}) : super(key: key);
-  final controller;
+  final BoardController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +214,7 @@ class SearchBar extends StatelessWidget {
                 child: Container(
                     child: InkWell(
                   onTap: () {
-                    // controller.getSearchBoard(searchText.text);
+                    controller.getSearchBoard(searchText.text);
                   },
                   child: Icon(Icons.search_outlined),
                 )),

@@ -12,9 +12,11 @@ class Board extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            appBar: WritePostAppBar(
-              COMMUNITY_ID: int.parse(Get.parameters["COMMUNITY_ID"]),
-            ),
+            appBar: controller.initCommunityId == -1
+                ? CustomAppBar()
+                : WritePostAppBar(
+                    COMMUNITY_ID: int.parse(Get.parameters["COMMUNITY_ID"]),
+                  ),
             body: RefreshIndicator(
               onRefresh: controller.refreshPage,
               child: Stack(
@@ -28,6 +30,7 @@ class Board extends StatelessWidget {
                       // 게시글 프리뷰 리스트
                       Expanded(
                         child: Obx(() {
+                          print(controller.httpStatus);
                           if (controller.dataAvailablePostPreview.value) {
                             return ListView.builder(
                                 controller: controller.scrollController.value,
@@ -37,8 +40,10 @@ class Board extends StatelessWidget {
                                     item: controller.postBody[index],
                                   );
                                 });
+                          } else if (controller.httpStatus == 404) {
+                            return Text("아직 게시글이 없습니다.");
                           } else {
-                            return Center(child: CircularProgressIndicator());
+                            return Text("아직 게시글이 없습니다.");
                           }
                         }),
                       ),
