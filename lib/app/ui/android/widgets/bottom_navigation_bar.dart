@@ -37,7 +37,13 @@ class CustomBottomNavigationBar extends StatelessWidget {
         unselectedItemColor: Colors.black,
         currentIndex: mainController.mainPageIndex.value,
         selectedItemColor: Colors.amber[800],
-        onTap: (index) => {mainController.mainPageIndex.value = index},
+        onTap: (index) {
+          if (index == 1) {
+            Get.toNamed("/outside/1/page/1");
+          } else {
+            mainController.mainPageIndex.value = index;
+          }
+        },
       );
     });
   }
