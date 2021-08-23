@@ -6,12 +6,14 @@ import 'package:polarstar_flutter/app/bindings/board/search_binding.dart';
 import 'package:polarstar_flutter/app/bindings/board/write_post_binding.dart';
 import 'package:polarstar_flutter/app/bindings/login_binding.dart';
 import 'package:polarstar_flutter/app/bindings/main_binding.dart';
+import 'package:polarstar_flutter/app/bindings/outside/outside_binding.dart';
 import 'package:polarstar_flutter/app/bindings/profile/mypage_binding.dart';
 import 'package:polarstar_flutter/app/ui/android/board/board.dart';
 import 'package:polarstar_flutter/app/ui/android/board/post.dart';
 import 'package:polarstar_flutter/app/ui/android/board/write_post.dart';
 import 'package:polarstar_flutter/app/ui/android/main/main_page.dart';
 import 'package:polarstar_flutter/app/ui/android/login/login_page.dart';
+import 'package:polarstar_flutter/app/ui/android/outside/outside_board.dart';
 import 'package:polarstar_flutter/app/ui/android/profile/mypage.dart';
 import 'package:polarstar_flutter/app/ui/android/profile/profile.dart';
 part './app_routes.dart';
@@ -71,6 +73,11 @@ class AppPages {
       name: Routes.MYPAGE,
       page: () => Mypage(),
       binding: MyPageBinding(),
+    ),
+    GetPage(
+      name: Routes.OUTSIDE,
+      page: () => OutSide(),
+      binding: OutSideBinding(),
     ),
   ];
 }

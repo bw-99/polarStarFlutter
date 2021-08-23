@@ -34,7 +34,7 @@ class BoardList extends StatelessWidget {
                             primary: Colors.black,
                           ),
                           onPressed: () {
-                            Get.toNamed('/recruit/1/page/1');
+                            Get.toNamed('/outside/1/page/1');
                           },
                           child: Text(
                             'RECRUIT',
