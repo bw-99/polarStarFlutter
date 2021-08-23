@@ -30,6 +30,7 @@ class PostPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        print(item);
         Get.toNamed('/board/${item.COMMUNITY_ID}/read/${item.BOARD_ID}');
       },
       child: Padding(
