@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polarstar_flutter/app/data/model/board/post_model.dart';
-import 'package:polarstar_flutter/app/data/model/login_model.dart';
 import 'package:meta/meta.dart';
-import 'package:polarstar_flutter/app/data/model/main_model.dart';
 import 'package:polarstar_flutter/app/data/repository/board/post_repository.dart';
-import 'package:polarstar_flutter/app/data/repository/main_repository.dart';
 import 'package:polarstar_flutter/session.dart';
 
 class PostController extends GetxController {
@@ -178,105 +175,6 @@ class PostController extends GetxController {
         default:
       }
     });
-  }
-
-  void sendMail(
-      int UNIQUE_ID, int COMMUNITY_ID, mailWriteController, mailController) {
-    Get.defaultDialog(
-      title: "쪽지 보내기",
-      barrierDismissible: true,
-      content: Column(
-        children: [
-          TextFormField(
-            controller: mailWriteController,
-            keyboardType: TextInputType.text,
-            maxLines: 1,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Container(
-                  height: 20,
-                  width: 20,
-                  child: Transform.scale(
-                    scale: 1,
-                    child: Obx(() {
-                      return Checkbox(
-                        value: mailAnonymous.value,
-                        onChanged: (value) {
-                          mailAnonymous.value = value;
-                        },
-                      );
-                    }),
-                  ),
-                ),
-                Text(' 익명'),
-              ],
-            ),
-          ),
-          ElevatedButton(
-              onPressed: () async {
-                String content = mailWriteController.text;
-                if (content.trim().isEmpty) {
-                  Get.snackbar("텍스트를 작성해주세요", "텍스트를 작성해주세요");
-                  return;
-                }
-
-                Map mailData = {
-                  "UNIQUE_ID": '$UNIQUE_ID',
-                  "PROFILE_UNNAMED": '1',
-                  "CONTENT": '${content.trim()}',
-                  "COMMUNITY_ID": '$COMMUNITY_ID'
-                };
-                //"target_mem_unnamed": '${item["unnamed"]}',
-
-                print(mailData);
-                var response = await Session().postX("/message", mailData);
-                switch (response.statusCode) {
-                  case 200:
-                    Get.back();
-                    Get.snackbar("쪽지 전송 완료", "쪽지 전송 완료",
-                        snackPosition: SnackPosition.TOP);
-
-                    int targetMessageBoxID =
-                        jsonDecode(response.body)["MAIL_BOX_ID"];
-
-                    print(jsonDecode(response.body));
-                    print(jsonDecode(response.body));
-
-                    mailController.MAIL_BOX_ID.value = targetMessageBoxID;
-
-                    print(mailController.MAIL_BOX_ID.value);
-                    await mailController.getMail();
-                    Get.toNamed("/mailBox/sendMail");
-
-                    break;
-                  case 403:
-                    Get.snackbar("다른 사람의 쪽지함입니다.", "다른 사람의 쪽지함입니다.",
-                        snackPosition: SnackPosition.TOP);
-                    break;
-
-                  default:
-                    Get.snackbar("업데이트 되지 않았습니다.", "업데이트 되지 않았습니다.",
-                        snackPosition: SnackPosition.TOP);
-                }
-
-                // print(c.mailAnonymous.value);
-                /*Get.offAndToNamed("/mailBox",
-                                                arguments: {"unnamed": 1});*/
-              },
-              child: Text("발송"))
-        ],
-      ),
-    );
-    mailWriteController.clear();
   }
 
   Future<int> getArrestType() async {

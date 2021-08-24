@@ -5,16 +5,20 @@ import 'package:polarstar_flutter/app/bindings/board/post_binding.dart';
 import 'package:polarstar_flutter/app/bindings/board/search_binding.dart';
 import 'package:polarstar_flutter/app/bindings/board/write_post_binding.dart';
 import 'package:polarstar_flutter/app/bindings/login_binding.dart';
+import 'package:polarstar_flutter/app/bindings/mail/mail_binding.dart';
 import 'package:polarstar_flutter/app/bindings/main_binding.dart';
 import 'package:polarstar_flutter/app/bindings/outside/outside_binding.dart';
+import 'package:polarstar_flutter/app/bindings/outside/post_binding.dart';
 import 'package:polarstar_flutter/app/bindings/profile/mypage_binding.dart';
 import 'package:polarstar_flutter/app/ui/android/board/board.dart';
 import 'package:polarstar_flutter/app/ui/android/board/hot_board.dart';
 import 'package:polarstar_flutter/app/ui/android/board/post.dart';
 import 'package:polarstar_flutter/app/ui/android/board/write_post.dart';
+import 'package:polarstar_flutter/app/ui/android/mail/mailBox.dart';
 import 'package:polarstar_flutter/app/ui/android/main/main_page.dart';
 import 'package:polarstar_flutter/app/ui/android/login/login_page.dart';
 import 'package:polarstar_flutter/app/ui/android/outside/outside_board.dart';
+import 'package:polarstar_flutter/app/ui/android/outside/outside_post.dart';
 import 'package:polarstar_flutter/app/ui/android/profile/mypage.dart';
 import 'package:polarstar_flutter/app/ui/android/profile/profile.dart';
 import 'package:polarstar_flutter/app/ui/android/search/search_board.dart';
@@ -81,6 +85,15 @@ class AppPages {
       page: () => OutSide(),
       binding: OutSideBinding(),
     ),
-    GetPage(name: Routes.SEARCH, page: () => Search())
+    GetPage(name: Routes.SEARCH, page: () => Search()),
+    GetPage(
+        name: Routes.OUTSIDE_POST,
+        page: () => OutSidePost(),
+        binding: OutSidePostBinding()),
+    GetPage(
+        name: Routes.MAILHISTORY,
+        page: () => MailBox(),
+        binding: MailBinding()),
+    GetPage(name: Routes.MAILBOX, page: () => MailBox(), binding: MailBinding())
   ];
 }

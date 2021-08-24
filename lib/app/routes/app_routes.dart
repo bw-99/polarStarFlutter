@@ -5,12 +5,16 @@ abstract class Routes {
   static const LOGIN = '/login';
   static const MAIN_PAGE = '/main';
   static const POST = "/board/:COMMUNITY_ID/read/:BOARD_ID";
+  static const OUTSIDE_POST = "/outside/:COMMUNITY_ID/read/:BOARD_ID";
 
   static const HOTBOARD = "/board/hot/page/:page";
   static const BOARD = "/board/:COMMUNITY_ID/page/:page";
   static const OUTSIDE = "/outside/:COMMUNITY_ID/page/:page";
   static const SEARCH_ALL = "/board/searchAll/page/:page";
   static const SEARCH = "/searchBoard";
+
+  static const MAILBOX = "/mail";
+  static const MAILHISTORY = "/mail/:MAIL_BOX_ID";
 
   static const WRITE_POST = "/board/:COMMUNITY_ID";
   static const WRITE_PUT = "/board/:COMMUNITY_ID/bid/:BOARD_ID";

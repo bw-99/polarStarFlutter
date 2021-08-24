@@ -143,18 +143,6 @@ class OutSidePostPreview extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 3.0, right: 3.0),
                           child: Icon(
-                            Icons.comment,
-                            size: 15,
-                          ),
-                        ),
-                        Text(item.COMMENTS.toString()),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 3.0, right: 3.0),
-                          child: Icon(
                             Icons.bookmark,
                             size: 15,
                           ),
