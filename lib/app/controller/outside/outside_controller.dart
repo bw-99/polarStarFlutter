@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:polarstar_flutter/app/data/model/board/board_model.dart';
-import 'package:polarstar_flutter/app/data/repository/board/board_repository.dart';
-import 'package:polarstar_flutter/session.dart';
+
+import 'package:polarstar_flutter/app/data/repository/outside/outside_repository.dart';
 
 import 'package:flutter/material.dart';
 
 class OutSideController extends GetxController {
   int initCommunityId;
   int initPage;
-  final BoardRepository repository;
+  final OutSideRepository repository;
 
   OutSideController(
       {@required this.repository,
@@ -28,20 +28,27 @@ class OutSideController extends GetxController {
 
   RxBool dataAvailablePostPreview = false.obs;
 
+  List<bool> didFetchInfo = [false, false, false];
+
   RxList<Board> postBody = <Board>[].obs;
+
+  List<Board> postBodyRecruit = <Board>[].obs;
+  List<Board> postBodyPartTime = <Board>[].obs;
+  List<Board> postBodyCompetition = <Board>[].obs;
+
+  List<List<Board>> postBodtOutside = [];
 
   var scrollController = ScrollController().obs;
 
   Future<void> refreshPage() async {
     postBody.clear();
     dataAvailablePostPreview.value = false;
-    await getBoard().then((value) => postBody.refresh());
-  }
-
-  Future<void> refreshHotPage() async {
-    postBody.clear();
-    dataAvailablePostPreview.value = false;
-    await getHotBoard().then((value) => postBody.refresh());
+    await getBoard();
+    didFetchInfo = [true, false, false];
+    //긁어온거 postBody에 넣음
+    postBodtOutside[0].forEach((element) {
+      postBody.add(element);
+    });
   }
 
   Future<void> getBoard() async {
@@ -50,38 +57,12 @@ class OutSideController extends GetxController {
         await repository.getBoard(COMMUNITY_ID.value, page.value);
     final int status = response["status"];
     final List<Board> listBoard = response["listBoard"];
-
-    httpStatus.value = status;
-
-    switch (status) {
-      case 200:
-        postBody.clear();
-
-        for (int i = 0; i < listBoard.length; i++) {
-          postBody.add(listBoard[i]);
-        }
-        dataAvailablePostPreview.value = true;
-        break;
-
-      default:
-        dataAvailablePostPreview.value = false;
-        break;
-    }
-  }
-
-  Future<void> getHotBoard() async {
-    dataAvailablePostPreview.value = false;
-    Map<String, dynamic> response = await repository.getHotBoard(page.value);
-    final int status = response["status"];
-    final List<Board> listBoard = response["listBoard"];
     httpStatus.value = status;
     switch (status) {
       case 200:
-        // canBuildRecruitBoard(true);
-        postBody.clear();
-
+        postBodtOutside[COMMUNITY_ID.value - 1].clear();
         for (int i = 0; i < listBoard.length; i++) {
-          postBody.add(listBoard[i]);
+          postBodtOutside[COMMUNITY_ID.value - 1].add(listBoard[i]);
         }
         dataAvailablePostPreview.value = true;
         break;
@@ -146,11 +127,19 @@ class OutSideController extends GetxController {
     COMMUNITY_ID.value = initCommunityId;
     page.value = initPage;
 
-    ever(COMMUNITY_ID, (_) async {
-      await getBoard();
-    });
+    postBodtOutside = [postBodyRecruit, postBodyPartTime, postBodyCompetition];
 
-    // await getBoard();
+    ever(COMMUNITY_ID, (_) async {
+      print(didFetchInfo);
+      if (!didFetchInfo[COMMUNITY_ID.value - 1]) {
+        didFetchInfo[COMMUNITY_ID.value - 1] = true;
+        await getBoard();
+      }
+      postBody.clear();
+      postBodtOutside[COMMUNITY_ID.value - 1].forEach((element) {
+        postBody.add(element);
+      });
+    });
 
     scrollController.value.addListener(() {
       if (scrollController.value.position.pixels ==

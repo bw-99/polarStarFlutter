@@ -26,6 +26,11 @@ class MyPageApiClient {
 
   Future<Map<String, dynamic>> getMineLike() async {
     var response = await Session().getX("/info/like");
+
+    if (response.statusCode != 200) {
+      return {"status": response.statusCode, "myPageBoard": []};
+    }
+
     var responseBody = jsonDecode(response.body);
     List<MyPageBoardModel> listMyPageBoardVal;
     Iterable listMyPageBoard = responseBody["LIKE"];
@@ -37,6 +42,11 @@ class MyPageApiClient {
 
   Future<Map<String, dynamic>> getMineScrap() async {
     var response = await Session().getX("/info/scrap");
+
+    if (response.statusCode != 200) {
+      return {"status": response.statusCode, "myPageBoard": []};
+    }
+
     var responseBody = jsonDecode(response.body);
     List<MyPageBoardModel> listMyPageBoardVal;
     Iterable listMyPageBoard = responseBody["SCRAP"];

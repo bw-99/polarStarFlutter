@@ -51,6 +51,7 @@ Widget boards(List<BoardInfo> data) {
   List<Widget> boardList = [];
 
   data.forEach((value) {
+    print(value.COMMUNITY_NAME);
     boardList.add(board(value.COMMUNITY_ID, value.COMMUNITY_NAME));
   });
 
@@ -76,7 +77,7 @@ Widget board(int COMMUNITY_ID, String COMMUNITY_NAME) {
           Get.toNamed('/board/$COMMUNITY_ID/page/1');
         },
         child: Text(
-          COMMUNITY_NAME,
+          "$COMMUNITY_NAME",
           textAlign: TextAlign.center,
         ),
       ),

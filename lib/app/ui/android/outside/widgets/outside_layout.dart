@@ -6,22 +6,13 @@ import 'package:get_storage/get_storage.dart';
 import 'package:polarstar_flutter/app/controller/board/board_controller.dart';
 import 'package:polarstar_flutter/app/controller/outside/outside_controller.dart';
 import 'package:polarstar_flutter/app/data/model/board/board_model.dart';
+import 'package:polarstar_flutter/app/data/model/main_model.dart';
+import 'package:polarstar_flutter/app/ui/android/functions/board_name.dart';
 
 // 게시글 프리뷰 위젯
 class OutSidePostPreview extends StatelessWidget {
   const OutSidePostPreview({Key key, @required this.item}) : super(key: key);
   final Board item;
-
-  String communityBoardName(int COMMUNITY_ID) {
-    final box = GetStorage();
-    var boardList = box.read('boardInfo');
-    for (var item in boardList) {
-      if (item['COMMUNITY_ID'] == COMMUNITY_ID) {
-        return item['COMMUNITY_NAME'];
-      }
-    }
-    return null;
-  }
 
   String boardName(int COMMUNITY_ID) {
     return communityBoardName(COMMUNITY_ID);
@@ -31,8 +22,7 @@ class OutSidePostPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        print(item);
-        Get.toNamed('/board/${item.COMMUNITY_ID}/read/${item.BOARD_ID}');
+        Get.toNamed('/outside/${item.COMMUNITY_ID}/read/${item.BOARD_ID}');
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 4),
@@ -134,7 +124,7 @@ class OutSidePostPreview extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Text(boardName(item.COMMUNITY_ID) + '게시판'),
+                    Text('${boardName(item.COMMUNITY_ID)} 게시판'),
                     Spacer(),
                     Row(
                       children: [
@@ -178,53 +168,6 @@ class OutSidePostPreview extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-// 검색창
-class OutsideSearchBar extends StatelessWidget {
-  const OutsideSearchBar({Key key, @required this.controller})
-      : super(key: key);
-  final OutSideController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    TextEditingController searchText = TextEditingController();
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Stack(
-        children: [
-          TextFormField(
-            controller: searchText,
-            textAlign: TextAlign.start,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(100)),
-              ),
-              hintText: 'search',
-              isDense: true,
-              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-            ),
-            style: TextStyle(),
-          ),
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: Container(
-                    child: InkWell(
-                  onTap: () {
-                    controller.getSearchBoard(searchText.text);
-                  },
-                  child: Icon(Icons.search_outlined),
-                )),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

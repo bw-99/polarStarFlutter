@@ -3,25 +3,9 @@ import 'package:polarstar_flutter/app/data/model/board/board_model.dart';
 
 import 'package:polarstar_flutter/session.dart';
 
-class BoardApiClient {
+class OutSideApiClient {
   Future<Map<String, dynamic>> getBoard(int COMMUNITY_ID, int page) async {
-    var response = await Session().getX("/board/$COMMUNITY_ID/page/$page");
-
-    if (response.statusCode != 200) {
-      return {"status": response.statusCode, "listBoard": []};
-    }
-
-    Iterable jsonResponse = jsonDecode(response.body);
-
-    List<Board> listBoard =
-        jsonResponse.map((model) => Board.fromJson(model)).toList();
-
-    return {"status": response.statusCode, "listBoard": listBoard};
-  }
-
-  Future<Map<String, dynamic>> getHotBoard(int page) async {
-    var response = await Session().getX("/board/hot/page/$page");
-
+    var response = await Session().getX("/outside/$COMMUNITY_ID/page/$page");
     if (response.statusCode != 200) {
       return {"status": response.statusCode, "listBoard": []};
     }
@@ -36,12 +20,10 @@ class BoardApiClient {
 
   Future<Map<String, dynamic>> getSearchAll(String searchText) async {
     var response =
-        await Session().getX("/board/searchAll/page/1?search=$searchText");
-
+        await Session().getX("/outside/searchAll/page/1?search=$searchText");
     if (response.statusCode != 200) {
       return {"status": response.statusCode, "listBoard": []};
     }
-
     Iterable jsonResponse = jsonDecode(response.body);
 
     List<Board> listBoard =
@@ -53,12 +35,11 @@ class BoardApiClient {
   Future<Map<String, dynamic>> getSearchBoard(
       String searchText, int COMMUNITY_ID) async {
     var response = await Session()
-        .getX("/board/$COMMUNITY_ID/search/page/1?search=$searchText");
+        .getX("/outside/$COMMUNITY_ID/search/page/1?search=$searchText");
 
     if (response.statusCode != 200) {
       return {"status": response.statusCode, "listBoard": []};
     }
-
     Iterable jsonResponse = jsonDecode(response.body);
 
     List<Board> listBoard =

@@ -23,7 +23,9 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: CustomAppBar(),
+        appBar: CustomAppBar(
+          pageName: "MAIN",
+        ),
         bottomNavigationBar:
             CustomBottomNavigationBar(mainController: mainController),
         body: Obx(() => mainPageWidget[mainController.mainPageIndex.value]),

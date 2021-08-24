@@ -1,18 +1,13 @@
 import 'package:meta/meta.dart';
-import 'package:polarstar_flutter/app/data/provider/board/board_provider.dart';
+import 'package:polarstar_flutter/app/data/provider/outside/outside_provider.dart';
 
-class BoardRepository {
-  final BoardApiClient apiClient;
+class OutSideRepository {
+  final OutSideApiClient apiClient;
 
-  BoardRepository({@required this.apiClient}) : assert(apiClient != null);
+  OutSideRepository({@required this.apiClient}) : assert(apiClient != null);
 
   Future<Map<String, dynamic>> getBoard(int COMMUNITY_ID, int page) async {
     final json = await apiClient.getBoard(COMMUNITY_ID, page);
-    return json;
-  }
-
-  Future<Map<String, dynamic>> getHotBoard(int page) async {
-    final json = await apiClient.getHotBoard(page);
     return json;
   }
 

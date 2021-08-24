@@ -21,9 +21,21 @@ class MainController extends GetxController {
 
   Future<void> getBoardInfo() async {
     final value = await repository.getBoardInfo();
-
     boardInfo.value = value["boardInfo"];
     hotBoard.value = value["hotBoard"];
+    List<BoardInfo> totalBoardInfo = [];
+
+    for (BoardInfo item in value["boardInfo"]) {
+      totalBoardInfo.add(item);
+    }
+
+    totalBoardInfo.addAll([
+      BoardInfo.fromJson({"COMMUNITY_ID": 1, "COMMUNITY_NAME": "취업"}),
+      BoardInfo.fromJson({"COMMUNITY_ID": 2, "COMMUNITY_NAME": "알바"}),
+      BoardInfo.fromJson({"COMMUNITY_ID": 3, "COMMUNITY_NAME": "공모전"}),
+    ]);
+
+    box.write("boardInfo", totalBoardInfo);
 
     print(hotBoard);
     print(boardInfo);

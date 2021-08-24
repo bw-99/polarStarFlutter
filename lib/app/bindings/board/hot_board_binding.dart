@@ -10,16 +10,7 @@ class HotBoardBinding implements Bindings {
         repository: BoardRepository(apiClient: BoardApiClient()),
         initCommunityId: -1,
         initPage: int.parse(Get.parameters["page"])));
-    print("put@@@");
-    print("put!!!");
-    print("put@@@");
-    print("put!!!");
-    print("put@@@");
-    print("put!!!");
-    print("put@@@");
-    print("put!!!");
-    print("put@@@");
-    print("put@@@");
+
     final BoardController boardController = Get.find();
     await boardController.getHotBoard();
   }

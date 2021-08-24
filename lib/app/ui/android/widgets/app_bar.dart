@@ -5,6 +5,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:polarstar_flutter/session.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
+  String pageName;
+
+  CustomAppBar({@required this.pageName});
+
   @override
   Size get preferredSize => Size.fromHeight(50);
   final box = GetStorage();
@@ -12,7 +16,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text('polarStar'),
+      title: Text('$pageName'),
       actions: [
         IconButton(
             onPressed: () {

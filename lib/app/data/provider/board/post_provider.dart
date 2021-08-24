@@ -8,6 +8,10 @@ class PostApiClient {
   Future<Map<String, dynamic>> getPostData(
       int COMMUNITY_ID, int BOARD_ID) async {
     var response = await Session().getX("/board/$COMMUNITY_ID/read/$BOARD_ID");
+    if (response.statusCode != 200) {
+      return {"status": response.statusCode, "listBoard": []};
+    }
+
     Iterable jsonReponse = jsonDecode(response.body);
 
     List<Post> listPost =
