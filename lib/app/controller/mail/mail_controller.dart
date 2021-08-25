@@ -19,9 +19,9 @@ class MailController extends GetxController {
 
   RxBool mailAnonymous = false.obs; //쪽지함 익명
   RxInt MAIL_BOX_ID = 0.obs; //쪽지함 ID
-  RxList<MailBoxModel> mailBox = [].obs; //쪽지함
-  RxList<MailHistoryModel> mailHistory = [].obs; //쪽지내역
-  RxMap opponentProfile = {}.obs; //쪽지 상대방 프로필
+  RxList<Rx<MailBoxModel>> mailBox = <Rx<MailBoxModel>>[].obs; //쪽지함
+  RxList<MailHistoryModel> mailHistory = <MailHistoryModel>[].obs; //쪽지내역
+  Rx<MailProfile> opponentProfile = MailProfile().obs; //쪽지 상대방 프로필
 
   @override
   onInit() async {
@@ -30,6 +30,7 @@ class MailController extends GetxController {
 
   @override
   onClose() async {
+    _dataAvailableMailSendPage.value = false;
     super.onClose();
   }
 
@@ -42,28 +43,35 @@ class MailController extends GetxController {
       return;
     }
 
-    Map messageData = {
-      "MAIL_BOX_ID": "${MAIL_BOX_ID.value}",
-      'CONTENT': "${content}",
-    };
+    var response = await repository.sendMailIn(MAIL_BOX_ID.value, content);
 
-    String postUrl = "/message";
+    switch (response["status"]) {
+      case 200:
+        //mailHistory(Obs)에 추가 =>  돔 자동 수정
+        mailHistory.add(MailHistoryModel.fromJson({
+          "FROM_ME": 1,
+          "CONTENT": content,
+          "TIME_CREATED": "${DateTime.now()}"
+        }));
 
-    var response = await Session().postX(postUrl, messageData);
+        //mailBox에서 해당 mail 찾아서 미리보기 내용 바꿈
+        for (Rx<MailBoxModel> item in mailBox) {
+          if (item.value.MAIL_BOX_ID == MAIL_BOX_ID.value) {
+            item.update((val) {
+              val.CONTENT = content;
+            });
+          }
+        }
+        break;
 
-    print(response.statusCode);
-
-    //mailHistory(Obs)에 추가 =>  돔 자동 수정
-    mailHistory.add(MailHistoryModel.fromJson({
-      "FROM_ME": 1,
-      "CONTENT": content,
-      "TIME_CREATED": "2021-08-06T10:11:55.457Z"
-    }));
+      default:
+        Get.snackbar("쪽지 보내기 실패", "쪽지 보내기 실패");
+    }
 
     //쪽지 보내면 자동으로 스크롤을 최하단으로 가게 하는 코드
     //근데 시부레 안됨 ㅈ같네
-    controller.animateTo(controller.position.maxScrollExtent,
-        duration: Duration(microseconds: 300), curve: Curves.easeOut);
+    // controller.animateTo(controller.position.maxScrollExtent,
+    //     duration: Duration(microseconds: 300), curve: Curves.easeOut);
 
     //쪽지 보내고나면 텍스트 입력창 다시 초기화
   }
@@ -75,7 +83,7 @@ class MailController extends GetxController {
     }
 
     Map<String, dynamic> value =
-        await repository.sendMail(UNIQUE_ID, COMMUNITY_ID, content);
+        await repository.sendMailOut(UNIQUE_ID, COMMUNITY_ID, content);
 
     switch (value["status"]) {
       case 200:

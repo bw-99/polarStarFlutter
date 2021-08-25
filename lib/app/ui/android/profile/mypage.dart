@@ -246,7 +246,7 @@ class ProfileIndex extends StatelessWidget {
               ),
             ),
             onTap: () async {
-              Get.toNamed("/mailBox");
+              Get.toNamed("/mail");
             },
           ),
           flex: 80,

@@ -1,19 +1,19 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:polarstar_flutter/app/controller/board/post_controller.dart';
+import 'package:polarstar_flutter/app/controller/mail/mail_controller.dart';
 import 'package:polarstar_flutter/app/data/model/board/post_model.dart';
+import 'package:polarstar_flutter/app/ui/android/board/widgets/board_mail_dialog.dart';
 
 class PostLayout extends StatelessWidget {
   PostLayout({this.c});
 
   final PostController c;
 
-  // MailController mailController = Get.find();
+  final MailController mailController = Get.find();
   final mailWriteController = TextEditingController();
 
   @override
@@ -132,12 +132,9 @@ class PostLayout extends StatelessWidget {
                   : Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: InkWell(
-                          onTap: () {
-                            // c.sendMail(
-                            //     postItem["UNIQUE_ID"],
-                            //     item.COMMUNITY_ID,
-                            //     mailWriteController,
-                            //     mailController);
+                          onTap: () async {
+                            await sendMail(item.UNIQUE_ID, item.COMMUNITY_ID,
+                                mailWriteController, mailController);
                           },
                           child: Icon(Icons.mail)),
                     ),
@@ -369,17 +366,15 @@ class PostLayout extends StatelessWidget {
                         ),
                 ),
               ),
+              //댓글 쪽지
               item.MYSELF
                   ? Container()
                   : Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: InkWell(
-                          onTap: () {
-                            // c.sendMail(
-                            //     comment["UNIQUE_ID"],
-                            //     item.COMMUNITY_ID,
-                            //     mailWriteController,
-                            //     mailController);
+                          onTap: () async {
+                            await sendMail(item.UNIQUE_ID, item.COMMUNITY_ID,
+                                mailWriteController, mailController);
                           },
                           child: Icon(Icons.mail)),
                     ),
@@ -512,14 +507,15 @@ class PostLayout extends StatelessWidget {
                             size: 15,
                           )),
               ),
+              //대댓 쪽지
               item.MYSELF
                   ? Container()
                   : Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: InkWell(
-                        onTap: () {
-                          // c.sendMail(item["UNIQUE_ID"], item.COMMUNITY_ID,
-                          //     mailWriteController, mailController);
+                        onTap: () async {
+                          await sendMail(item.UNIQUE_ID, item.COMMUNITY_ID,
+                              mailWriteController, mailController);
                         },
                         child: Icon(Icons.mail),
                       ),

@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
 import 'package:polarstar_flutter/app/data/model/mail/mailBox_model.dart';
 import 'package:polarstar_flutter/app/data/model/mail/mailSend_model.dart';
 
 import 'package:polarstar_flutter/session.dart';
 
 class MailApiClient {
-  Future<Map<String, dynamic>> sendMail(
+  Future<Map<String, dynamic>> sendMailOut(
       int UNIQUE_ID, int COMMUNITY_ID, String content) async {
     Map mailData = {
       "UNIQUE_ID": '$UNIQUE_ID',
@@ -21,6 +22,16 @@ class MailApiClient {
       "status": response.statusCode,
       "MAIL_BOX_ID": jsonDecode(response.body)["MAIL_BOX_ID"]
     };
+  }
+
+  Future<Map<String, dynamic>> sendMailIn(
+      int MAIL_BOX_ID, String content) async {
+    Map messageData = {
+      "MAIL_BOX_ID": "${MAIL_BOX_ID}",
+      'CONTENT': "${content}",
+    };
+    var response = await Session().postX("/message", messageData);
+    return {"status": response.statusCode};
   }
 
   Future<Map<String, dynamic>> getMail(int MAIL_BOX_ID) async {
@@ -54,14 +65,18 @@ class MailApiClient {
     //쪽지함 보기
     var response = await Session().getX("/message");
 
+    print("adsfadsf");
+
     if (response.statusCode != 200) {
       return {"status": response.statusCode, "listMailBox": []};
     }
 
+    print(response.statusCode);
+
     Iterable jsonReponse = jsonDecode(response.body);
 
-    List<MailBoxModel> listMailBox =
-        jsonReponse.map((model) => MailBoxModel.fromJson(model)).toList();
+    List<Rx<MailBoxModel>> listMailBox =
+        jsonReponse.map((model) => MailBoxModel.fromJson(model).obs).toList();
 
     return {"status": response.statusCode, "listMailBox": listMailBox};
   }
