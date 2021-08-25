@@ -12,7 +12,9 @@ class Mypage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: CustomAppBar(),
+          appBar: CustomAppBar(
+            pageName: "마이 페이지",
+          ),
           body: RefreshIndicator(
             onRefresh: myPageController.getRefresh,
             child: Stack(
@@ -342,8 +344,8 @@ Widget getPosts(MyPageBoardModel item, myPageController) {
     final box = GetStorage();
     var boardList = box.read('boardInfo');
     for (var item in boardList) {
-      if (item['COMMUNITY_ID'] == COMMUNITY_ID) {
-        return item['COMMUNITY_NAME'];
+      if (item.COMMUNITY_ID == COMMUNITY_ID) {
+        return item.COMMUNITY_NAME;
       }
     }
     return null;
